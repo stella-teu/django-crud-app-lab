@@ -2,8 +2,8 @@ from django.shortcuts import render
 from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import Monkey, Feeding
-from .serializers import MonkeySerializer, FeedingSerializer
+from .models import Monkey, Feeding, Toy
+from .serializers import MonkeySerializer, FeedingSerializer, ToySerializer
 
 # Create your views here.
 class Home(APIView):
@@ -39,3 +39,12 @@ class FeedingDetail(generics.RetrieveUpdateDestroyAPIView):
     def get_queryset(self):
         monkey_id = self.kwargs['monkey_id']
         return Feeding.objects.filter(monkey_id=monkey_id)
+
+class ToyList(generics.ListCreateAPIView):
+    queryset = Toy.objects.all()
+    serializer_class = ToySerializer
+
+class ToyDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Toy.objects.all()
+    serializer_class = ToySerializer
+    lookup_field = 'id'

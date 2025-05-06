@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Monkey, Feeding
+from .models import Monkey, Feeding, Toy
 
 class MonkeySerializer(serializers.ModelSerializer):
     class Meta:
@@ -11,3 +11,8 @@ class FeedingSerializer(serializers.ModelSerializer):
         model = Feeding
         fields = '__all__'
         read_only_fields = ('monkey',)
+
+class ToySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Toy
+        fields = '__all__'

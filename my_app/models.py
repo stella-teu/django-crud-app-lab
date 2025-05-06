@@ -1,6 +1,7 @@
 from django.db import models
 
 MEALS = ( ('F', 'Fruits'), ('N', 'Nuts'), ('L', 'Leaves'))
+SIZES = ( ('S', 'Small'), ('M', 'Medium'), ('L', 'Large'))
 
 # Create your models here.
 class  Monkey(models.Model):
@@ -22,3 +23,7 @@ class Feeding(models.Model):
     
     class Meta:
         ordering = ['-date']
+
+class Toy(models.Model):
+    name = models.CharField(max_length=50)
+    size = models.CharField(max_length=1, choices=SIZES, default=SIZES[0][0])
