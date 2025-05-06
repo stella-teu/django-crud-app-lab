@@ -19,6 +19,16 @@ class MonkeyDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Monkey.objects.all()
     serializer_class = MonkeySerializer
     lookup_field = 'id'
+    
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        toys_not_associated = Toy.objects.exclude(id_in=instance.toys.all())
+        toys_serializer = ToySerializer(toys_not_associated, many=True)
+        return Response({
+            'monkey': serializer.data,
+            'toys_not_associated': toys_serializer.data
+        })
 
 class FeedingList(generics.ListCreateAPIView):
     serializer_class = FeedingSerializer
@@ -48,3 +58,17 @@ class ToyDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Toy.objects.all()
     serializer_class = ToySerializer
     lookup_field = 'id'
+    
+class AddToyToMonkey(APIView):
+    def post(self, request, monkey_id, toy_id):
+        monkey = Monkey.objects.get(id=monkey_id)
+        toy = Toy.objects.get(id=toy_id)
+        monkey.toys.add(toy)
+        return Response({'message': f'Toy {toy.name} added to Monkey {monkey.name}'})
+
+class RemoveToyFromMonkey(APIView):
+    def post(self, request, monkey_id, toy_id):
+        monkey = Monkey.objects.get(id=monkey_id)
+        toy = Toy.objects.get(id=toy_id)
+        monkey.toys.remove(toy)
+        return Response({'message': f'Toy {toy.name} removed from Monkey {monkey.name}'})
