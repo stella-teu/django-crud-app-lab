@@ -7,7 +7,11 @@ from .views import (Home,
                     ToyList,
                     ToyDetail,
                     AddToyToMonkey,
-                    RemoveToyFromMonkey)
+                    RemoveToyFromMonkey,
+                    CreateUserView,
+                    LoginView,
+                    VerifyUserView
+                    )
 
 urlpatterns = [
     path('', Home.as_view(), name='home'),
@@ -19,4 +23,7 @@ urlpatterns = [
     path('toys/<int:id>', ToyDetail.as_view(), name='toy_detail'),
     path('monkeys/<int:monkey_id>/add_toy/<int:toy_id>/', AddToyToMonkey.as_view(), name='add_toy_to_monkey'),
     path('monkeys/<int:monkey_id>/remove_toy/<int:toy_id>/', RemoveToyFromMonkey.as_view(), name='remove_toy_from_monkey'),
+    path('users/register/', CreateUserView.as_view(), name='register'),
+    path('users/login/', LoginView.as_view(), name='login'),
+    path('users/token/refresh', VerifyUserView.as_view(), name='token_refresh')
 ]
